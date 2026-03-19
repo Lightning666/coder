@@ -1,6 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.IO.Ports;
+using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
 using SerialWorkbench.Infrastructure;
@@ -274,7 +280,7 @@ public sealed class MainViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(SelectedPort))
         {
-            UpdateStatus("请先选择串口。 ");
+            UpdateStatus("请先选择串口。");
             return;
         }
 

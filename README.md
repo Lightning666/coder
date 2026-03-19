@@ -314,7 +314,35 @@ AA + CMD + LEN + DATA + XOR
 
 ---
 
-## 六、总结
+## 六、常见编译问题与解决办法
+
+### 1. XDG0008：找不到 `DataPointsToPointCollectionConverter`
+
+如果 VS 设计器提示找不到 `clr-namespace:SerialWorkbench.Converters` 下的转换器，通常不是 XAML 本身写错，而是 **项目里有 C# 文件先编译失败了**，导致设计器无法加载资源。
+
+本项目里最容易触发连带错误的地方是：
+
+- `AutoSaveService.cs` 里使用的 `Directory`、`Path`
+- `RecordFileService.cs` 里使用的 `File`
+- `MainViewModel.cs` 里使用的 `Path`
+
+现在已经改为显式引用相关命名空间。如果你本地仍遇到这个问题，请先：
+
+1. **清理解决方案**
+2. **重新生成解决方案**
+3. 关闭再打开 `MainWindow.xaml`
+
+### 2. `Directory` / `Path` / `File` 不存在
+
+如果报这些错误，通常说明当前项目没有正确识别到对应命名空间。现在代码中已经显式补上 `System.IO`，正常情况下重新加载项目即可。
+
+### 3. `parts.Length`、`parts[0]` 一类错误
+
+这类错误一般不是 `Split` 真有问题，而是前面的 `File` 未识别，导致后续类型分析全乱。只要 `System.IO` 恢复正常，`RecordFileService.cs` 中这些报错通常会一起消失。
+
+---
+
+## 七、总结
 
 这个示例已经把你提出的需求拆成独立文件并模块化实现：
 
